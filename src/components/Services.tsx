@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useCMS } from '../context/CMSContext';
 import { CurveCanvas } from './CurveCanvas';
 
@@ -9,96 +9,129 @@ interface ServicesProps {
 export const Services: React.FC<ServicesProps> = ({ onOpenContact }) => {
   const { content } = useCMS();
   const { services } = content;
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const activeService = services[activeIndex] || services[0];
 
   return (
     <section
       id="services"
-      className="relative w-full bg-[#050507] text-white py-20 md:py-28 overflow-hidden select-none"
+      className="relative w-full bg-black text-white py-20 md:py-28 overflow-hidden select-none"
       aria-label="Capabilities and Services"
     >
-      {/* 3D Curved Orange Tube Canvas running across the section matching Image 1 */}
+      {/* Continuous 3D Orange Curved Tube Canvas matching Images 3, 4, 5 */}
       <div className="absolute inset-0 z-0 h-full w-full pointer-events-none opacity-90 overflow-hidden">
         <CurveCanvas className="w-full h-full" />
       </div>
 
-      <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
-        {/* Section Header */}
-        <div className="mb-12 md:mb-16">
-          <span className="text-xs font-mono font-bold tracking-widest uppercase text-orange-500 bg-orange-950/40 border border-orange-500/20 px-3 py-1 rounded-full">
-            {content.servicesTag}
-          </span>
-          <h2 className="text-3xl md:text-5xl font-black tracking-tight text-white mt-4 uppercase">
-            Four disciplines. <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-400">One unfair advantage.</span>
-          </h2>
+      <div className="relative z-10 max-w-[1440px] mx-auto px-6 sm:px-10 md:px-16">
+        
+        {/* Navigation Tabs to switch between the 4 services */}
+        <div className="flex items-center gap-3 mb-10 overflow-x-auto no-scrollbar">
+          {services.map((s, idx) => (
+            <button
+              key={s.id}
+              onClick={() => setActiveIndex(idx)}
+              className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shrink-0 ${
+                activeIndex === idx
+                  ? 'bg-white text-black shadow-lg shadow-white/10'
+                  : 'bg-neutral-900 text-neutral-400 hover:text-white hover:bg-neutral-800 border border-neutral-800'
+              }`}
+            >
+              0{idx + 1}. {s.title}
+            </button>
+          ))}
         </div>
 
-        {/* 4 Cards Grid mirroring Image 1 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8">
-          {services.map((service, index) => (
-            <div
-              key={service.id}
-              className="group relative flex flex-col justify-between bg-neutral-900/70 border border-neutral-800/80 hover:border-orange-500/50 rounded-2xl p-6 md:p-7 backdrop-blur-md transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-1"
-            >
-              <div>
-                {/* Header tag */}
-                <div className="text-[10px] md:text-xs font-mono uppercase tracking-wider text-neutral-400 mb-2">
-                  {service.tagline}
-                </div>
+        {/* Active Service Showcase Slide matching Images 3, 4, 5 */}
+        <div className="relative w-full min-h-[520px] flex flex-col justify-between">
+          
+          {/* Header */}
+          <div className="mb-10 md:mb-14">
+            <div className="text-xs md:text-sm font-sans uppercase tracking-[0.2em] text-neutral-400 mb-2">
+              {content.servicesTag}
+            </div>
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white font-sans leading-none">
+              {activeService.title}
+            </h2>
+          </div>
 
-                {/* Service Title */}
-                <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white mb-5 group-hover:text-orange-400 transition-colors">
-                  {service.title}
-                </h3>
-
-                {/* Service Card Mockup Image */}
-                <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden mb-6 bg-neutral-950 border border-neutral-800">
-                  <img
-                    src={service.image}
-                    alt={`${service.title} mockup preview`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-                </div>
-
-                {/* Tagline / Hook */}
-                <p className="text-sm text-neutral-300 font-medium leading-relaxed mb-6">
-                  {service.description}
-                </p>
-
-                {/* Deliverables Bullet List */}
-                <ul className="space-y-2 mb-8" aria-label={`Deliverables for ${service.title}`}>
-                  {service.deliverables.map((item, i) => (
-                    <li
-                      key={i}
-                      className="flex items-start gap-2.5 text-xs text-neutral-400 font-medium leading-snug"
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+          {/* 2-Column Content Layout matching Images 3, 4, 5 */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-14 items-center">
+            
+            {/* Left Column: Mockup Card */}
+            <div className="lg:col-span-6">
+              <div className="relative w-full max-w-[540px] aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden bg-neutral-950 border border-neutral-800/90 shadow-2xl">
+                <img
+                  src={activeService.image}
+                  alt={`${activeService.title} presentation mockup`}
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  loading="lazy"
+                />
               </div>
+            </div>
 
-              {/* Pill Button: CONTACT matching Image 1 */}
-              <div className="pt-4 border-t border-neutral-800/60 mt-auto">
+            {/* Right Column: Description, Sparkle Bullet Points, and CONTACT Button */}
+            <div className="lg:col-span-6 flex flex-col items-start space-y-7 max-w-xl">
+              
+              {/* Hook / Description */}
+              <p className="text-lg sm:text-2xl font-normal text-white leading-snug font-sans">
+                {activeService.description}
+              </p>
+
+              {/* Bullet list with sparkle '✦' glyph matching Images 3, 4, 5 */}
+              <ul className="space-y-3.5" aria-label={`Deliverables for ${activeService.title}`}>
+                {activeService.deliverables.map((item, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center gap-3 text-base sm:text-lg text-white font-medium font-sans"
+                  >
+                    <span className="text-white text-base select-none shrink-0">✦</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Sharp Rectangular White CONTACT Button matching Images 3, 4, 5 */}
+              <div className="pt-2">
                 <button
-                  onClick={() => onOpenContact(service.title)}
-                  className="w-full py-3 px-6 rounded-full bg-white hover:bg-orange-600 text-[#B82200] hover:text-white font-extrabold text-xs tracking-wider uppercase transition-all duration-200 shadow-md hover:shadow-orange-500/30 flex items-center justify-center gap-2 group/btn"
-                  aria-label={`Contact Upthrust about ${service.title}`}
+                  onClick={() => onOpenContact(activeService.title)}
+                  className="px-9 py-3.5 bg-white hover:bg-neutral-100 text-[#C22900] font-black text-sm uppercase tracking-wider transition-all duration-150 shadow-md hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white"
+                  aria-label={`Contact Upthrust about ${activeService.title}`}
                 >
-                  <span>CONTACT</span>
-                  <span className="transform group-hover/btn:translate-x-1 transition-transform">↗</span>
+                  CONTACT
                 </button>
               </div>
 
-              {/* Number indicator watermark in bottom corner */}
-              <div className="absolute top-4 right-4 text-xs font-mono font-bold text-neutral-700 pointer-events-none">
-                0{index + 1}
-              </div>
             </div>
-          ))}
+
+          </div>
+
+          {/* Bottom Slide Pager controls */}
+          <div className="flex items-center justify-between pt-12 mt-12 border-t border-neutral-900 text-xs text-neutral-400">
+            <div className="font-mono">
+              0{activeIndex + 1} / 0{services.length}
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setActiveIndex((prev) => (prev > 0 ? prev - 1 : services.length - 1))}
+                className="w-9 h-9 rounded-full border border-neutral-800 hover:border-neutral-600 text-white flex items-center justify-center transition-colors"
+                aria-label="Previous service"
+              >
+                ←
+              </button>
+              <button
+                onClick={() => setActiveIndex((prev) => (prev < services.length - 1 ? prev + 1 : 0))}
+                className="w-9 h-9 rounded-full border border-neutral-800 hover:border-neutral-600 text-white flex items-center justify-center transition-colors"
+                aria-label="Next service"
+              >
+                →
+              </button>
+            </div>
+          </div>
+
         </div>
+
       </div>
     </section>
   );

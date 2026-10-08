@@ -11,12 +11,12 @@ export const defaultContent: SiteContent = {
     trustMetric: '100+',
     trustSubtext: "Brands trusted us to define how they're seen.",
     clientLogos: [
-      { name: 'zomato', label: 'Zomato' },
+      { name: 'zomato', label: 'zomato' },
       { name: 'bosch', label: 'BOSCH' },
       { name: 'loreal', label: "L'ORÉAL" },
       { name: 'vega', label: 'VEGA' },
       { name: 'dell', label: 'DELL' },
-      { name: 'loreal-paris', label: "L'ORÉAL PARIS" }
+      { name: 'loreal-2', label: "L'ORÉAL" }
     ]
   },
   servicesTag: 'WHAT CAN WE DO FOR YOU',
@@ -25,53 +25,53 @@ export const defaultContent: SiteContent = {
       id: 'strategy',
       tagline: 'WHAT CAN WE DO FOR YOU',
       title: 'Strategy and Insight',
-      description: 'We interrogate what others assume. Then we build an unfair hurdle for you.',
+      description: 'We interrogate what others assume. Then we build the brief behind the brief.',
       deliverables: [
         'Brand strategy & positioning',
         'Messaging & tone of voice',
         'Audience & competitor research',
-        'Persona design & creative systems'
+        'Workshops & creative sprints'
       ],
-      image: '/images/service-strategy.jpg'
+      image: '/images/card-strategy-exact.png'
     },
     {
       id: 'branding',
       tagline: 'WHAT CAN WE DO FOR YOU',
       title: 'Brand & visual identity',
-      description: 'Not just a pretty logo. We build holistic design systems that anchor your market dominance.',
+      description: 'We build systems, not just logos. So you own the category, not just the conversation.',
       deliverables: [
         'Brand identity & visual language',
-        'Guidelines & tooling',
+        'Guidelines & naming',
         'Illustration & iconography',
         'Brand architecture & systems'
       ],
-      image: '/images/service-branding.jpg'
+      image: '/images/card-branding-exact.png'
     },
     {
       id: 'digital',
       tagline: 'WHAT CAN WE DO FOR YOU',
       title: 'Product & digital experience',
-      description: 'We design for humans and metrics. Frictionless, engaging, and ruthlessly conversion-driven.',
+      description: 'We design for humans and metrics. So users stay, engage, and come back.',
       deliverables: [
         'UI/UX & website design',
         'Design systems & prototyping',
         'User research & testing',
         'Motion graphics & micro-interactions'
       ],
-      image: '/images/service-digital.jpg'
+      image: '/images/card-digital-exact.png'
     },
     {
       id: 'campaign',
       tagline: 'WHAT CAN WE DO FOR YOU',
       title: 'Creative & campaign production',
-      description: 'High-conversion ad creative. Beautiful storytelling applied to omnichannel performance marketing.',
+      description: "For work people can't ignore. Then we put it in front of them.",
       deliverables: [
         'Campaign creative & social content',
         'Presentations & pitch decks',
         'Marketing collateral & ad creative',
-        'Omnichannel content systems'
+        'Omnichannel content & art direction'
       ],
-      image: '/images/service-campaign.jpg'
+      image: '/images/card-campaign-exact.png'
     }
   ],
   testimonials: [
@@ -131,8 +131,8 @@ export const defaultContent: SiteContent = {
     headline: 'UPTHRUST.DESIGN',
     newsletterTitle: 'Sign up for our emails',
     newsletterConsent: 'By checking this box sign up for our newsletter and receive marketing emails and updates on our services. You can unsubscribe at any time.',
-    agencyDescription: 'Strategic Brand & Design Systems',
-    ioDescription: 'Digital Products & Modern Engineering',
-    bottomNote: 'Crafted with precision for brands that demand performance.'
+    agencyDescription: 'add description here',
+    ioDescription: 'add description here',
+    bottomNote: 'Lorem ipsum dolor sit amet consectetur'
   }
 };

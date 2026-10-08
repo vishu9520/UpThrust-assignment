@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
 
     if (!email || !email.includes('@') || !email.includes('.')) {
       setStatus('error');
-      setErrorMessage('Please provide a valid business email address.');
+      setErrorMessage('Please provide a valid email address.');
       return;
     }
 
@@ -32,7 +32,7 @@ export const Footer: React.FC = () => {
     setStatus('loading');
 
     setTimeout(() => {
-      // 1. Push form_submit event to GTM dataLayer (Mandatory Assignment Requirement)
+      // 1. Mandatory GTM event push
       pushEvent('form_submit', {
         form_id: 'newsletter_footer',
         form_name: 'Email Newsletter Signup',
@@ -52,7 +52,6 @@ export const Footer: React.FC = () => {
       setEmail('');
       setConsent(false);
 
-      // 3. Visual Confetti
       try {
         confetti({
           particleCount: 60,
@@ -62,119 +61,127 @@ export const Footer: React.FC = () => {
       } catch {
         // Safe fallback
       }
-    }, 600);
+    }, 500);
   };
 
   return (
     <footer
       id="contact"
-      className="relative w-full bg-black text-white pt-16 md:pt-24 pb-12 overflow-hidden border-t border-neutral-900 select-none"
-      aria-label="Site Footer and Newsletter"
+      className="relative w-full bg-black text-white pt-14 pb-12 overflow-hidden border-t border-neutral-900 select-none"
+      aria-label="Footer and Newsletter"
     >
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12">
+      <div className="w-full px-6 sm:px-10 md:px-14">
+        
         {/* Massive UPTHRUST . DESIGN Title matching Image 2 */}
-        <div className="w-full border-b border-neutral-800 pb-10 md:pb-16 flex items-center justify-between flex-wrap gap-4">
-          <div className="w-full flex items-center justify-between text-[11.8vw] font-black uppercase tracking-tighter leading-none select-none text-white">
+        <div className="w-full border-b border-neutral-700/80 pb-4 mb-8">
+          <div className="w-full flex items-center justify-between text-[14vw] font-footer-display tracking-tight leading-none select-none text-white">
             <span>UPTHRUST</span>
+            
             {/* 3-Petal Orange Logo Mark matching Image 2 */}
-            <div className="inline-flex items-center justify-center mx-2 sm:mx-4 transform scale-90 sm:scale-100">
-              <svg className="w-[6vw] h-[6vw] text-[#FF4500]" viewBox="0 0 100 100" fill="none">
-                <circle cx="50" cy="35" r="28" fill="#FF4500" fillOpacity="0.9" />
-                <circle cx="34" cy="62" r="28" fill="#FF5722" fillOpacity="0.85" />
-                <circle cx="66" cy="62" r="28" fill="#FF3D00" fillOpacity="0.85" />
+            <div className="inline-flex items-center justify-center mx-1 sm:mx-3 transform translate-y-[1vw]">
+              <svg className="w-[5.5vw] h-[5.5vw] text-[#FF4500]" viewBox="0 0 100 100" fill="none">
+                {/* 3 overlapping petals */}
+                <circle cx="50" cy="38" r="26" fill="#FF4500" fillOpacity="0.88" />
+                <circle cx="36" cy="62" r="26" fill="#FF5722" fillOpacity="0.85" />
+                <circle cx="64" cy="62" r="26" fill="#FF3D00" fillOpacity="0.85" />
+                {/* Lower vertical stem petal */}
+                <path d="M50 68 L50 90" stroke="#FF4500" strokeWidth="6" strokeLinecap="round" />
               </svg>
             </div>
+            
             <span>DESIGN</span>
           </div>
         </div>
 
-        {/* Footer Grid matching Image 2 */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-12">
+        {/* 2-Column Grid with vertical divider matching Image 2 */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-14 pt-2">
           
-          {/* Left Columns: Agency Links & Contacts */}
-          <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-10">
-            {/* Agency Column */}
-            <div className="space-y-4">
-              <a
-                href="https://upthrust.agency"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-base md:text-lg font-bold text-white hover:text-orange-500 underline underline-offset-4 transition-colors"
-              >
-                upthrust.agency <span className="text-sm">↗</span>
-              </a>
-              <p className="text-xs text-neutral-400 font-mono">
-                {footer.agencyDescription}
-              </p>
-              <p>
+          {/* Left Side: Agency Links & Contacts (6 cols) */}
+          <div className="lg:col-span-6 flex flex-col justify-between space-y-12 pr-0 lg:pr-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              {/* Column 1: upthrust.agency */}
+              <div className="space-y-3">
                 <a
-                  href="mailto:hello@upthrust.agency"
-                  className="text-sm text-neutral-300 hover:text-white transition-colors"
+                  href="https://upthrust.agency"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm sm:text-base font-semibold text-white hover:text-orange-500 underline underline-offset-2 transition-colors font-sans"
                 >
-                  hello@upthrust.agency
+                  upthrust.agency <span className="text-xs">↗</span>
                 </a>
-              </p>
+                <p className="text-xs text-neutral-400 font-sans">
+                  {footer.agencyDescription}
+                </p>
+                <p>
+                  <a
+                    href="mailto:hello@upthrust.agency"
+                    className="text-xs text-neutral-400 hover:text-white transition-colors font-sans"
+                  >
+                    hello@upthrust.agency
+                  </a>
+                </p>
+              </div>
+
+              {/* Column 2: upthrust.io */}
+              <div className="space-y-3">
+                <a
+                  href="https://upthrust.io"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm sm:text-base font-semibold text-white hover:text-orange-500 underline underline-offset-2 transition-colors font-sans"
+                >
+                  upthrust.io <span className="text-xs">↗</span>
+                </a>
+                <p className="text-xs text-neutral-400 font-sans">
+                  {footer.ioDescription}
+                </p>
+                <p>
+                  <a
+                    href="mailto:hello@upthrust.io"
+                    className="text-xs text-neutral-400 hover:text-white transition-colors font-sans"
+                  >
+                    hello@upthrust.io
+                  </a>
+                </p>
+              </div>
             </div>
 
-            {/* .IO Column */}
-            <div className="space-y-4">
-              <a
-                href="https://upthrust.io"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-base md:text-lg font-bold text-white hover:text-orange-500 underline underline-offset-4 transition-colors"
-              >
-                upthrust.io <span className="text-sm">↗</span>
-              </a>
-              <p className="text-xs text-neutral-400 font-mono">
-                {footer.ioDescription}
-              </p>
-              <p>
-                <a
-                  href="mailto:hello@upthrust.io"
-                  className="text-sm text-neutral-300 hover:text-white transition-colors"
-                >
-                  hello@upthrust.io
-                </a>
-              </p>
-            </div>
-
-            {/* Bottom Note */}
-            <div className="sm:col-span-2 pt-6">
-              <p className="text-xs text-neutral-400 font-mono">
+            {/* Bottom note matching Image 2 */}
+            <div className="pt-8">
+              <p className="text-xs text-neutral-400 font-sans">
                 {footer.bottomNote}
               </p>
             </div>
           </div>
 
-          {/* Right Column: Newsletter Signup Form matching Image 2 */}
-          <div className="lg:col-span-6 lg:border-l lg:border-neutral-900 lg:pl-12">
-            <h3 className="text-base md:text-lg font-bold text-white mb-4">
-              {footer.newsletterTitle}
-            </h3>
+          {/* Right Side: Newsletter Signup Form matching Image 2 (6 cols with vertical divider) */}
+          <div className="lg:col-span-6 lg:border-l border-neutral-700/80 lg:pl-12 flex flex-col justify-between space-y-8">
+            <div>
+              <h3 className="text-sm sm:text-base font-semibold text-white mb-4 font-sans">
+                {footer.newsletterTitle}
+              </h3>
 
-            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-              {/* Checkbox consent */}
-              <div className="flex items-start gap-3">
-                <input
-                  type="checkbox"
-                  id="newsletter-consent"
-                  checked={consent}
-                  onChange={(e) => setConsent(e.target.checked)}
-                  className="mt-1 w-4 h-4 rounded border-neutral-700 bg-neutral-900 text-orange-600 focus:ring-orange-500 cursor-pointer"
-                  required
-                />
-                <label
-                  htmlFor="newsletter-consent"
-                  className="text-xs text-neutral-400 leading-normal cursor-pointer select-none"
-                >
-                  {footer.newsletterConsent}
-                </label>
-              </div>
+              <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+                {/* Consent Checkbox */}
+                <div className="flex items-start gap-2.5">
+                  <input
+                    type="checkbox"
+                    id="newsletter-consent"
+                    checked={consent}
+                    onChange={(e) => setConsent(e.target.checked)}
+                    className="mt-0.5 w-3.5 h-3.5 rounded-none border-neutral-500 bg-transparent text-white focus:ring-0 cursor-pointer"
+                    required
+                  />
+                  <label
+                    htmlFor="newsletter-consent"
+                    className="text-[11px] text-neutral-400 leading-tight cursor-pointer select-none font-sans"
+                  >
+                    {footer.newsletterConsent}
+                  </label>
+                </div>
 
-              {/* Email Input + Submit Button matching Image 2 */}
-              <div className="space-y-3 pt-2">
-                <div className="relative">
+                {/* Email Input */}
+                <div className="pt-2">
                   <input
                     type="email"
                     id="newsletter-email"
@@ -184,51 +191,50 @@ export const Footer: React.FC = () => {
                     autoComplete="email"
                     inputMode="email"
                     disabled={status === 'loading'}
-                    className="w-full bg-transparent border-b border-neutral-700 focus:border-orange-500 py-3 text-sm text-white placeholder-neutral-500 focus:outline-none transition-colors"
+                    className="w-full bg-transparent border-b border-neutral-700 focus:border-white py-2 text-sm text-white placeholder-neutral-500 focus:outline-none transition-colors font-sans"
                     aria-label="Email address for newsletter"
                   />
                 </div>
 
-                {/* Error message */}
+                {/* Error status */}
                 {status === 'error' && (
                   <p className="text-xs text-red-500 font-medium" role="alert">
                     {errorMessage}
                   </p>
                 )}
 
-                {/* Success State */}
+                {/* Success status */}
                 {status === 'success' && (
                   <div
-                    className="p-3 bg-emerald-950/80 border border-emerald-600/40 rounded-lg text-emerald-400 text-xs font-semibold flex items-center gap-2 animate-in fade-in"
+                    className="p-2.5 bg-emerald-950/80 border border-emerald-600/40 rounded text-emerald-400 text-xs font-semibold flex items-center gap-2 animate-in fade-in"
                     role="status"
                   >
                     <span>✓</span>
-                    <span>
-                      Success! You're subscribed. Event <code>form_submit</code> pushed to GTM dataLayer.
-                    </span>
+                    <span>Subscribed! Event <code>form_submit</code> sent to GTM.</span>
                   </div>
                 )}
 
+                {/* Submit text button matching Image 2 */}
                 <div>
                   <button
                     type="submit"
                     disabled={status === 'loading'}
-                    className="px-8 py-2.5 rounded-full bg-white hover:bg-orange-500 text-black hover:text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:opacity-50"
+                    className="text-xs font-semibold text-white hover:text-orange-400 focus:outline-none transition-colors"
                   >
                     {status === 'loading' ? 'Submitting...' : 'Submit'}
                   </button>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
 
-            {/* Bottom Secondary Links & Socials matching Image 2 */}
-            <div className="pt-10 mt-10 border-t border-neutral-900 flex flex-wrap items-center justify-between gap-4 text-xs text-neutral-400">
+            {/* Links and Socials matching Image 2 */}
+            <div className="space-y-4 pt-6 text-xs text-neutral-400 font-sans">
               <div className="flex items-center gap-6">
                 <a
                   href="https://upthrust.agency"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-white transition-colors underline"
+                  className="hover:text-white transition-colors underline underline-offset-2"
                 >
                   upthrust.agency ↗
                 </a>
@@ -236,13 +242,13 @@ export const Footer: React.FC = () => {
                   href="https://upthrust.io"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-white transition-colors underline"
+                  className="hover:text-white transition-colors underline underline-offset-2"
                 >
                   upthrust.io ↗
                 </a>
               </div>
 
-              <div className="flex items-center gap-4">
+              <div>
                 <a
                   href="https://instagram.com"
                   target="_blank"
@@ -251,7 +257,7 @@ export const Footer: React.FC = () => {
                 >
                   Instagram
                 </a>
-                <span>,</span>
+                <span> , </span>
                 <a
                   href="https://linkedin.com"
                   target="_blank"
@@ -262,8 +268,8 @@ export const Footer: React.FC = () => {
                 </a>
               </div>
 
-              <div className="flex items-center gap-4">
-                <a href="#privacy" className="hover:text-white transition-colors">
+              <div className="flex items-center justify-between text-[11px] text-neutral-400 pt-2">
+                <a href="#privacy" className="hover:text-neutral-300 transition-colors">
                   Privacy Policy
                 </a>
                 <span>© Upthrust Design</span>
@@ -273,6 +279,7 @@ export const Footer: React.FC = () => {
           </div>
 
         </div>
+
       </div>
     </footer>
   );
