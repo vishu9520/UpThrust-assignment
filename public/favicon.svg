@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <rect width="48" height="48" rx="12" fill="#09090b"/>
+  <!-- 3-petal trefoil mark in vibrant orange -->
+  <circle cx="24" cy="20" r="10" fill="#FF4500" fill-opacity="0.9"/>
+  <circle cx="18" cy="28" r="10" fill="#FF5722" fill-opacity="0.8"/>
+  <circle cx="30" cy="28" r="10" fill="#FF3D00" fill-opacity="0.8"/>
+  <path d="M24 16 L25.5 22 L22.5 22 Z" fill="#FFFFFF"/>
+</svg>
