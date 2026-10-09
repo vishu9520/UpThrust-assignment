@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { SiteContent, FAQItem, TestimonialItem, ServiceItem, FormSubmission, HeroContent } from '../types/content';
 import { defaultContent } from '../data/defaultContent';
 
@@ -51,17 +51,31 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const [isCMSModalOpen, setIsCMSModalOpen] = useState(false);
+  const isHydrated = useRef(false);
+  const remoteSyncEnabled = useRef(true);
 
-  // Sync content to localStorage
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
     } catch (err) {
       console.error('Failed to save CMS content to localStorage:', err);
     }
+
+    if (isHydrated.current && remoteSyncEnabled.current) {
+      void fetch('/api/cms/content', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(content)
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error(`Content sync failed with status ${response.status}`);
+        }
+      }).catch((err) => {
+        console.error('Failed to sync CMS content to MongoDB:', err);
+      });
+    }
   }, [content]);
 
-  // Sync submissions to localStorage
   useEffect(() => {
     try {
       localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(submissions));
@@ -69,6 +83,35 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       console.error('Failed to save submissions to localStorage:', err);
     }
   }, [submissions]);
+
+  useEffect(() => {
+    const loadRemoteData = async () => {
+      try {
+        const [contentResponse, submissionsResponse] = await Promise.all([
+          fetch('/api/cms/content'),
+          fetch('/api/submissions')
+        ]);
+
+        if (!contentResponse.ok || !submissionsResponse.ok) {
+          throw new Error('The CMS API returned an error while loading data.');
+        }
+
+        const [remoteContent, remoteSubmissions] = await Promise.all([
+          contentResponse.json() as Promise<SiteContent>,
+          submissionsResponse.json() as Promise<FormSubmission[]>
+        ]);
+        setContent(remoteContent);
+        setSubmissions(remoteSubmissions);
+      } catch (err) {
+        remoteSyncEnabled.current = false;
+        console.warn('MongoDB CMS unavailable; continuing with local storage:', err);
+      } finally {
+        isHydrated.current = true;
+      }
+    };
+
+    void loadRemoteData();
+  }, []);
 
   const updateHero = (heroUpdates: Partial<HeroContent>) => {
     setContent((prev) => ({
@@ -164,6 +207,20 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       timestamp: new Date().toISOString()
     };
     setSubmissions((prev) => [newSubmission, ...prev]);
+
+    if (isHydrated.current && remoteSyncEnabled.current) {
+      void fetch('/api/submissions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newSubmission)
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error(`Submission sync failed with status ${response.status}`);
+        }
+      }).catch((err) => {
+        console.error('Failed to save form submission to MongoDB:', err);
+      });
+    }
   };
 
   const clearSubmissions = () => {
@@ -172,6 +229,18 @@ export const CMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       localStorage.removeItem(SUBMISSIONS_KEY);
     } catch (err) {
       console.error(err);
+    }
+
+    if (isHydrated.current && remoteSyncEnabled.current) {
+      void fetch('/api/submissions', { method: 'DELETE' })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Submission cleanup failed with status ${response.status}`);
+          }
+        })
+        .catch((err) => {
+          console.error('Failed to clear MongoDB submissions:', err);
+        });
     }
   };
 
