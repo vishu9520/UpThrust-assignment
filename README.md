@@ -6,6 +6,7 @@
 
 ## 🚀 Live Demo & Presentation
 - **Local Dev Server:** `http://localhost:3000/`
+- **Live Deployment:** [upthrust-assignment-ipcd.onrender.com](https://upthrust-assignment-ipcd.onrender.com/#hero)
 - **Build Output:** Production static bundle in `/dist` (Vercel / Netlify / Cloudflare Pages ready)
 
 ---
@@ -179,6 +180,12 @@ server serves the built frontend and the MongoDB API from the same deployment.
 
 The server connects to MongoDB on startup and seeds `defaultContent` only when the CMS
 document does not already exist. Existing CMS edits are preserved.
+
+Live deployment:
+
+```text
+https://upthrust-assignment-ipcd.onrender.com/#hero
+```
 
 ### Option B: Run Locally
 ```bash
