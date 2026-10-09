@@ -83,8 +83,8 @@ The local development server persists CMS content and form submissions in MongoD
 The browser only communicates with the server API, so MongoDB credentials are never bundled
 into the frontend.
 
-1. Keep the Atlas credentials in `atlas-credentials.env` (or set `MONGODB_ENV_FILE` to a
-   protected environment file). This file is ignored by Git.
+1. Keep the Atlas credentials in `.env` (or set `MONGODB_ENV_FILE` to a protected environment
+   file). This file is ignored by Git.
 2. Set `MONGODB_DB_NAME` if you want a database name other than `upthrust`.
 3. Run `npm run dev` to start both the Vite frontend and the MongoDB-backed API.
 4. For production, run `npm run build` and then `npm start` on a server that has the same

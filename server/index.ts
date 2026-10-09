@@ -6,11 +6,11 @@ import { MongoClient } from 'mongodb';
 import { defaultContent } from '../src/data/defaultContent';
 import type { FormSubmission, SiteContent } from '../src/types/content';
 
-config({ path: process.env.MONGODB_ENV_FILE ?? 'atlas-credentials.env' });
+config({ path: process.env.MONGODB_ENV_FILE ?? '.env' });
 
 const PORT = Number(process.env.PORT ?? 3001);
 const MONGODB_URI = process.env.MONGODB_URI;
-const DATABASE_NAME = process.env.MONGODB_DB_NAME ?? 'upthrust';
+const DATABASE_NAME = process.env.MONGODB_DB_NAME ?? 'UpThrust';
 
 if (!MONGODB_URI) {
   throw new Error(
@@ -92,6 +92,15 @@ app.delete('/api/submissions', async (_req, res, next) => {
 
 const frontendPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../dist');
 app.use(express.static(frontendPath));
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    res.status(404).json({ error: 'API route not found.' });
+    return;
+  }
+
+  next();
+});
+
 app.use((_req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
@@ -106,6 +115,11 @@ app.use(
 async function start() {
   await client.connect();
   await database.command({ ping: 1 });
+  await contentCollection.updateOne(
+    { _id: 'site-content' },
+    { $setOnInsert: { content: defaultContent } },
+    { upsert: true }
+  );
   console.log(`Connected to MongoDB database "${DATABASE_NAME}".`);
   app.listen(PORT, () => {
     console.log(`UpThrust server listening on http://localhost:${PORT}`);
