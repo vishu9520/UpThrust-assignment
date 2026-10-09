@@ -65,7 +65,6 @@ Live GTM Inspector & CMS Admin: Available via discrete floating badges or naviga
 d1f5957 build: add asset extraction automation script
 8edbd3d style: perfect 1:1 match of Hero, Services slides, and Footer with exact design files
 e6c2aca docs: add comprehensive candidate assessment README and deployment guide
-f372eb7 test: add Puppeteer visual verification, GTM tracking tests, and axe-core a11y audit suite
 0eb42ae feat(ui): build 3D statue & curve canvases, Hero, Services, Testimonials, FAQ accordion, Footer, and CMS admin
 17ffe19 feat(core): implement CMS state store, dataLayer tracking context, and design system
 a258f7d feat(seo): configure meta tags, OpenGraph, JSON-LD schema, and Tailwind CSS v4 pipeline

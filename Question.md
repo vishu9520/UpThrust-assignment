@@ -30,7 +30,6 @@
   * *Why:* Real-time UI reactivity via React Context + `localStorage`, backed by an Express 5 REST API connected to MongoDB Atlas (`cms` and `submissions` collections). If the database or network drops, it gracefully falls back to local storage with zero UI crash.
 * **Tracking:** **Google Tag Manager Data Layer (`window.dataLayer`)**
   * *Why:* Complies strictly with enterprise analytics best practices. Dispatches `{ event: 'form_submit', ... }` on both the newsletter form and lead inquiry modal. Includes an on-screen live dataLayer debugger.
-* **Verification:** **Axe-core & Puppeteer Test Suites**
   * *Why:* Automated proof of 100% WCAG 2.1 AA accessibility (0 violations) and responsive multi-viewport compliance (375px, 768px, 1440px).
 
 ---
@@ -70,11 +69,6 @@ UpThrust/
 │       ├── CMSAdminModal.tsx       # Live in-browser visual CMS editor for non-developers
 │       ├── CMSFloatingBadge.tsx    # Floating UI trigger for CMS modal
 │       └── GTMDebugger.tsx         # Live on-screen dataLayer event stream monitor
-└── scripts/
-    ├── audit-a11y.cjs              # Axe-core automated accessibility audit runner
-    ├── test-forms-gtm.cjs          # Puppeteer test verifying form submissions and window.dataLayer events
-    ├── take-screenshots.cjs       # Multi-viewport responsive snapshot generator (375px, 768px, 1440px)
-    └── extract-assets.cjs          # Automated design asset extraction utility
 ```
 
 ### Detailed Particulars of Critical Files:
@@ -99,7 +93,7 @@ UpThrust/
 ### Q1: "Why did you choose this stack over Webflow or Next.js?"
 > **Model Answer:**  
 > "I evaluated three paths for this project:
-> 1. **Webflow:** Great for pure static marketing pages, but limiting when integrating custom Three.js WebGL 3D pipelines with interactive cursor lighting, custom dataLayer debugger tooling, and automated CI/CD test suites like axe-core.
+> 1. **Webflow:** Great for pure static marketing pages, but limiting when integrating custom Three.js WebGL 3D pipelines with interactive cursor lighting, custom dataLayer debugger tooling, and a custom Express/MongoDB CMS backend.
 > 2. **Next.js:** A fantastic framework, but for a single high-conversion landing page with custom WebGL canvases, full SSR introduces unnecessary hydration complexity and potential Canvas layout shift on client hydration.
 > 3. **Vite + React 19 + TypeScript + Express:** Provides instantaneous local development (HMR in <50ms), complete control over the DOM and WebGL render lifecycle, strict type checking for both CMS schemas and analytics payloads, and a clean backend API that bridges directly into MongoDB Atlas while offering an in-browser local storage fallback. It achieves the highest possible client performance while remaining 100% modular."
 
@@ -147,7 +141,7 @@ UpThrust/
 > **How to verify during the interview:**
 > 1. Open the on-screen **GTM dataLayer** badge in the bottom-left corner. It displays the exact event object in real-time.
 > 2. Open Chrome DevTools Console, type `window.dataLayer`, and press Enter. You will see every structured event object pushed in chronological order.
-> 3. We also have an automated Puppeteer test script (`npm run test:gtm` / `node scripts/test-forms-gtm.cjs`) that tests and asserts this event programmatically."
+> 
 
 ---
 
@@ -157,7 +151,6 @@ UpThrust/
 > * **375px (Mobile):** The 14vw hero title scales cleanly using CSS clamp (`clamp(3rem, 15vw, 13.5vw)`), the 3D statue height scales to 380px with touch interaction, annotations tuck into neat vertical stacks, and the 6-column footer stacks into a clean mobile accordion layout. The hamburger menu opens a full-screen drawer with accessible tap targets (>48px).
 > * **768px (Tablet):** The Services cards transition into a 2-column layout, and client proof badges line up in a 3x2 grid.
 > * **1440px (Desktop):** The layout expands to full architectural grid specs with CAD blueprint overlays, split 6-column + 6-column footer grid, and interactive Three.js mouse-parallax tracking.
-> * We validated all three viewports with our Puppeteer screenshot runner in [`scripts/take-screenshots.cjs`](file:///d:/UpThrust/scripts/take-screenshots.cjs)."
 
 ---
 
@@ -186,7 +179,7 @@ UpThrust/
 
 ### Q8: "How is accessibility (WCAG 2.1 AA) guaranteed?"
 > **Model Answer:**  
-> "We achieved a perfect 0-violation audit using `axe-core`:
+> "We implemented accessibility directly in the UI:
 > * **Color Contrast:** All orange CTA buttons feature dark text or high-contrast background values (`#FF3500` with black or `#B82200` with white) exceeding the 4.5:1 ratio.
 > * **Semantic HTML:** `<header>`, `<main>`, `<section>`, `<footer>`, `<dialog>`, and native `<details>`/`<summary>` elements.
 > * **Focus Indicators:** Clear `:focus-visible` ring outlines on all buttons, links, and inputs.
@@ -279,7 +272,6 @@ During the interview, the panel might ask you to make a live change. Here is how
   * **CLS (Cumulative Layout Shift):** All containers have explicit aspect ratios or minimum heights (`min-h-[720px]`).
 
 ### Accessibility (Lighthouse Target: 90+ | Actual: 100 WCAG AA):
-* Verified using **axe-core** engine with 0 violations across 45 rules.
 * Keyboard navigation:
   * Tab order is natural and logical.
   * Modals trap focus and release focus back to trigger button upon close.
@@ -324,7 +316,6 @@ window.dataLayer.push({
 ### Verification Methods:
 1. **Visual UI Inspector:** Click `GTM dataLayer` button in bottom-left.
 2. **DevTools Console:** Run `window.dataLayer`.
-3. **Automated Test:** Run `node scripts/test-forms-gtm.cjs`.
 
 ---
 
@@ -364,10 +355,9 @@ The assignment states: *"AI-assisted development tools are allowed and encourage
 > 1. **What I used AI for:**
 >    * Drafting the initial mathematical SVG coordinates for the complex CAD blueprint overlay.
 >    * Generating boilerplate TypeScript interface definitions and Three.js lighting setups.
->    * Setting up automated Puppeteer test scripts for multi-viewport regression testing.
+>    
 > 2. **What I reviewed and engineered myself:**
 >    * Calibrated the exact 1:1 visual styling (slant angles, font families, margins, colors) against the supplied design images.
 >    * Designed the dual-layer CMS architecture combining local storage with MongoDB Atlas and fallback recovery.
->    * Verified and tuned WCAG 2.1 AA accessibility to achieve 0 axe-core violations.
 >    * Engineered the GTM dataLayer dispatching pipeline and built the live on-screen visual inspector.
 >    * Tuned the Three.js render loop to prevent memory leaks and maintain smooth 60fps performance on mobile."

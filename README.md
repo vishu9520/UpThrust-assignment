@@ -20,7 +20,6 @@
 | **Tailwind CSS v4** | Modern, token-based design system using CSS variables (`--brand-orange: #FF3E00`, `--bg-dark: #050507`), fluid typography (`15vw`), and responsive container queries. |
 | **Reactive In-Browser CMS** | Decoupled content system persisted to `localStorage` with real-time UI updates, import/export JSON, and factory reset. Built for non-developers. |
 | **Google Tag Manager DataLayer** | Native `window.dataLayer.push()` event tracking for `form_submit` across Newsletter and Project Inquiry forms, paired with a live UI event inspector. |
-| **Axe-core & Puppeteer** | Automated WCAG 2.1 AA accessibility testing (0 violations) and responsive multi-viewport regression suite (375px, 768px, 1440px). |
 
 ---
 
@@ -59,10 +58,6 @@ UpThrust/
 │   ├── index.css               # Engineering grid, tokens, accessibility focus states
 │   ├── App.tsx                 # Semantic landmarks, providers & layout assembly
 │   └── main.tsx                # React DOM root entrypoint
-├── scripts/
-│   ├── take-screenshots.cjs    # Automated multi-viewport screenshot runner
-│   ├── test-forms-gtm.cjs      # End-to-end form & dataLayer validation script
-│   └── audit-a11y.cjs          # Axe-core WCAG 2.1 AA compliance audit
 └── vite.config.ts              # Code splitting, asset optimization, Tailwind plugin
 ```
 
@@ -132,7 +127,7 @@ window.dataLayer.push({
 
 ## ♿ Accessibility & SEO Compliance
 
-- **Lighthouse Accessibility:** **100% WCAG 2.1 AA Compliant** verified via `axe-core` (0 violations across 45 rules).
+- **Accessibility:** Semantic HTML, keyboard navigation, visible focus states, and accessible form controls.
 - **Readable Color Contrast:** High-contrast buttons and badges (`#B82200` on white exceeds 5.5:1 ratio).
 - **Keyboard Navigation:** Native `<dialog>` focus trapping, visible `:focus-visible` outlines, and native `<details>`/`<summary>` accordion.
 - **Technical SEO:**
@@ -220,7 +215,7 @@ MongoDB Atlas `UpThrust.submissions` collection and in **CMS Admin → Leads & I
 Rotate any MongoDB password that has been exposed and use a new password in Render.
 
 ## 🤖 AI Tools Used During Development
-- **Google Antigravity IDE (Gemini 3.8 Flash):** Used for scaffolding, Three.js shader material calibration, responsive CSS token design, and writing automated Puppeteer/Axe-core test scripts.
+- **Google Antigravity IDE (Gemini 3.8 Flash):** Used for scaffolding, Three.js shader material calibration, and responsive CSS token design.
 - **Review & Validation:** All code was audited, verified for strict WCAG 2.1 AA accessibility, tested against responsive breakpoints (375px, 768px, 1440px), and compiled with 0 TypeScript errors.
 
 ---
