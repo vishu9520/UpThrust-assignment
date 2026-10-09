@@ -18,7 +18,8 @@
 | **Vite + React 19 + TypeScript** | Instant HMR during development, strict type safety, zero layout shift, and blazing fast production bundling. |
 | **Three.js (WebGL)** | Custom WebGL pipelines for rendering the 3D iridescent bust statue (`statue.glb`) and winding orange curve ribbon (`curve-line.glb`) with ACESFilmic tone mapping, physical reflections, and reactive cursor tilt. |
 | **Tailwind CSS v4** | Modern, token-based design system using CSS variables (`--brand-orange: #FF3E00`, `--bg-dark: #050507`), fluid typography (`15vw`), and responsive container queries. |
-| **Reactive In-Browser CMS** | Decoupled content system persisted to `localStorage` with real-time UI updates, import/export JSON, and factory reset. Built for non-developers. |
+| **MongoDB-backed CMS** | Non-developer editor with MongoDB Atlas persistence, local-storage fallback, import/export JSON, and factory reset. |
+| **Express API** | Server-side API for CMS content and contact/newsletter submissions; database credentials never reach the browser. |
 | **Google Tag Manager DataLayer** | Native `window.dataLayer.push()` event tracking for `form_submit` across Newsletter and Project Inquiry forms, paired with a live UI event inspector. |
 
 ---
@@ -58,6 +59,8 @@ UpThrust/
 │   ├── index.css               # Engineering grid, tokens, accessibility focus states
 │   ├── App.tsx                 # Semantic landmarks, providers & layout assembly
 │   └── main.tsx                # React DOM root entrypoint
+├── server/
+│   └── index.ts                # Express API, MongoDB connection, CMS seeding, and production server
 └── vite.config.ts              # Code splitting, asset optimization, Tailwind plugin
 ```
 
@@ -89,6 +92,10 @@ into the frontend.
 The API creates a `cms` collection for the single site-content document and a `submissions`
 collection for newsletter and contact leads. If MongoDB is unavailable, the frontend continues
 using its existing local-storage fallback.
+
+The repository does not include standalone scripts for screenshots, asset extraction, form
+testing, or accessibility auditing. These were removed because they were not part of the
+application runtime or deployment workflow.
 
 ### 3. File-Based Content Architecture
 For static builds or headless CMS integrations (e.g., Sanity, Strapi, Contentful), all default copy resides cleanly in:
