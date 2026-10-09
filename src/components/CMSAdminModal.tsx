@@ -39,19 +39,19 @@ export const CMSAdminModal: React.FC = () => {
       <div className="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden text-neutral-200">
         
         {/* Header */}
-        <div className="p-5 md:p-6 border-b border-neutral-800 flex items-center justify-between bg-neutral-950">
-          <div className="flex items-center gap-3">
+        <div className="shrink-0 p-5 md:p-6 border-b border-neutral-800 flex items-center justify-between gap-4 bg-neutral-950">
+          <div className="min-w-0 flex items-center gap-3">
             <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
-            <div>
-              <h2 id="cms-modal-title" className="text-lg md:text-xl font-black uppercase text-white font-sans">
+            <div className="min-w-0">
+              <h2 id="cms-modal-title" className="text-lg md:text-xl font-black uppercase text-white font-sans truncate">
                 Upthrust CMS & Structured Content Hub
               </h2>
-              <p className="text-xs text-neutral-400">
+              <p className="text-xs text-neutral-400 truncate">
                 Non-developer live management layer • Real-time reactive updates
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="shrink-0 flex items-center gap-2">
             <button
               onClick={exportJSON}
               className="px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-xs font-mono text-neutral-300 transition-colors"
@@ -70,10 +70,10 @@ export const CMSAdminModal: React.FC = () => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-neutral-800 bg-neutral-950/60 px-6 gap-2 text-xs font-bold uppercase tracking-wider overflow-x-auto">
+        <div className="shrink-0 flex min-h-14 items-stretch border-b border-neutral-800 bg-neutral-950/60 px-3 sm:px-6 gap-1 sm:gap-2 text-xs font-bold uppercase tracking-wider overflow-x-auto">
           <button
             onClick={() => setActiveTab('faqs')}
-            className={`py-3.5 px-4 border-b-2 transition-colors ${
+            className={`shrink-0 whitespace-nowrap self-stretch py-3.5 px-3 sm:px-4 border-b-2 transition-colors ${
               activeTab === 'faqs'
                 ? 'border-orange-500 text-orange-400'
                 : 'border-transparent text-neutral-400 hover:text-neutral-200'
@@ -83,7 +83,7 @@ export const CMSAdminModal: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('hero')}
-            className={`py-3.5 px-4 border-b-2 transition-colors ${
+            className={`shrink-0 whitespace-nowrap self-stretch py-3.5 px-3 sm:px-4 border-b-2 transition-colors ${
               activeTab === 'hero'
                 ? 'border-orange-500 text-orange-400'
                 : 'border-transparent text-neutral-400 hover:text-neutral-200'
@@ -93,7 +93,7 @@ export const CMSAdminModal: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('testimonials')}
-            className={`py-3.5 px-4 border-b-2 transition-colors ${
+            className={`shrink-0 whitespace-nowrap self-stretch py-3.5 px-3 sm:px-4 border-b-2 transition-colors ${
               activeTab === 'testimonials'
                 ? 'border-orange-500 text-orange-400'
                 : 'border-transparent text-neutral-400 hover:text-neutral-200'
@@ -103,7 +103,7 @@ export const CMSAdminModal: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('submissions')}
-            className={`py-3.5 px-4 border-b-2 transition-colors ${
+            className={`shrink-0 whitespace-nowrap self-stretch py-3.5 px-3 sm:px-4 border-b-2 transition-colors ${
               activeTab === 'submissions'
                 ? 'border-orange-500 text-orange-400'
                 : 'border-transparent text-neutral-400 hover:text-neutral-200'
