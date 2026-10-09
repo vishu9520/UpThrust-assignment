@@ -13,7 +13,8 @@
 5. [Performance, SEO & Accessibility Defense](#5-performance-seo--accessibility-defense)
 6. [Forms, Data Layer & Conversion Tracking Deep Dive](#6-forms-data-layer--conversion-tracking)
 7. [Backend & CMS Architecture Explained](#7-backend--cms-architecture)
-8. [Use of AI Tools Disclosure Strategy](#8-use-of-ai-tools-disclosure)
+8. [Content, Forms, Integrations & Safe Operations](#8-content-forms-integrations--safe-operations)
+9. [Use of AI Tools Disclosure Strategy](#9-use-of-ai-tools-disclosure)
 
 ---
 
@@ -346,7 +347,153 @@ window.dataLayer.push({
 
 ---
 
-## 8. Use of AI Tools Disclosure Strategy
+## 8. Content, Forms, Integrations & Safe Operations
+
+### How content is structured
+
+The site content is defined by the TypeScript interfaces in
+[`src/types/content.ts`](file:///d:/UpThrust/src/types/content.ts) and seeded from
+[`src/data/defaultContent.ts`](file:///d:/UpThrust/src/data/defaultContent.ts).
+The top-level `SiteContent` object contains:
+
+* `hero` - headline, annotations, trust metric, and client logos.
+* `services` - service title, description, deliverables, and image path.
+* `testimonials` - quote, author, company, avatar, and rating.
+* `faqs` - question and answer records with stable IDs.
+* `footer` - footer copy and newsletter consent text.
+
+At runtime, [`src/context/CMSContext.tsx`](file:///d:/UpThrust/src/context/CMSContext.tsx)
+is the single content state layer. Components read content through `useCMS()`, while
+CMS actions such as `updateHero`, `updateFAQ`, `addFAQ`, and
+`updateTestimonial` update the relevant part of the object without replacing
+unrelated content.
+
+### How forms are processed
+
+There are two submission flows:
+
+1. [`src/components/ContactModal.tsx`](file:///d:/UpThrust/src/components/ContactModal.tsx)
+   validates name, email, and company, then creates a `contact_lead` payload
+   containing the selected service, budget, and project message.
+2. [`src/components/Footer.tsx`](file:///d:/UpThrust/src/components/Footer.tsx)
+   validates the newsletter email and requires the consent checkbox before
+   creating a `newsletter` submission.
+
+Both handlers currently use a short loading delay for the demo experience. They
+then:
+
+1. Push a `form_submit` event through `useGTM()`.
+2. Create a `FormSubmission` record through `addSubmission()`.
+3. Update the success state in the UI.
+
+The GTM event is separate from persistence: analytics tracking succeeds through
+`window.dataLayer`, while the form record is handled by the CMS submission flow.
+
+### Where submissions are stored
+
+Each submission has this shape:
+
+```ts
+{
+  id: string;
+  type: 'newsletter' | 'contact_lead';
+  data: Record<string, any>;
+  timestamp: string;
+}
+```
+
+The frontend stores the record in three layers:
+
+* React state, so the CMS Leads & Inquiries tab updates immediately.
+* `localStorage` under `upthrust_form_submissions_v1`, so the browser can
+  continue displaying submissions if the API is unavailable.
+* MongoDB, when remote synchronization is enabled, through
+  `POST /api/submissions`.
+
+The Express handler in [`server/index.ts`](file:///d:/UpThrust/server/index.ts)
+validates the basic submission shape and inserts it into the MongoDB
+`submissions` collection. The CMS reads persisted records with
+`GET /api/submissions`.
+
+### How frontend and backend components interact
+
+The browser never connects directly to MongoDB. The interaction is:
+
+```text
+React component
+  -> CMSContext / GTMContext
+  -> fetch('/api/cms/content') or fetch('/api/submissions')
+  -> Express API in server/index.ts
+  -> MongoDB Atlas
+```
+
+On startup, `CMSContext` first reads local content/submissions, then attempts to
+hydrate from the API. Content changes use `PUT /api/cms/content`; new form
+records use `POST /api/submissions`. If the remote CMS load fails, the context
+disables remote synchronization for that session and continues with local
+storage, logging the failure rather than silently pretending the remote write
+succeeded.
+
+The same Express server serves the built Vite application from `dist/`. API
+paths are handled before the frontend fallback, while non-API paths receive
+`dist/index.html`.
+
+### How integrations are configured
+
+* **MongoDB:** the official `mongodb` driver is initialized in
+  [`server/index.ts`](file:///d:/UpThrust/server/index.ts). The server uses the
+  `UpThrust` database by default and the `cms` and `submissions` collections.
+* **GTM/dataLayer:** [`src/context/GTMContext.tsx`](file:///d:/UpThrust/src/context/GTMContext.tsx)
+  initializes `window.dataLayer`, adds timestamps and IDs to tracked events, and
+  powers the on-screen [`GTMDebugger.tsx`](file:///d:/UpThrust/src/components/GTMDebugger.tsx).
+* **Three.js:** [`src/components/StatueCanvas.tsx`](file:///d:/UpThrust/src/components/StatueCanvas.tsx)
+  loads `/models/statue.glb` and [`CurveCanvas.tsx`](file:///d:/UpThrust/src/components/CurveCanvas.tsx)
+  loads `/models/curve-line.glb` from the public assets.
+* **CMS API:** the frontend calls relative `/api/...` URLs, so development and
+  production can use the same client-side code when the API is served by the
+  application host.
+
+### How environment variables are handled
+
+The server loads environment variables with `dotenv`. By default it reads
+`.env`; an alternate file can be selected with `MONGODB_ENV_FILE`.
+
+Required/optional server settings are:
+
+```text
+MONGODB_URI       # Required MongoDB connection string; server-only
+MONGODB_DB_NAME   # Optional database name; defaults to UpThrust
+PORT              # Optional HTTP port; defaults to 3001
+MONGODB_ENV_FILE  # Optional dotenv file path; defaults to .env
+```
+
+`MONGODB_URI` is read only by the Node.js server and is not bundled into the
+React application. Keep real credentials in deployment secret storage or an
+ignored local environment file. Do not commit `.env`, Atlas credentials, or
+database connection strings.
+
+### How to safely update the website after launch
+
+1. Create a branch and make one focused change at a time.
+2. For copy/FAQ/testimonial changes, use the CMS editor where appropriate;
+   export the current content JSON before a larger change.
+3. For code or schema changes, update the TypeScript types and related
+   consumers together. Do not edit production MongoDB documents manually unless
+   the change has been backed up and reviewed.
+4. Run `npm run build` to execute TypeScript checking and create the production
+   Vite bundle.
+5. Test the main flows at 375px, 768px, and 1440px: navigation, CMS tabs,
+   contact inquiry, newsletter consent, FAQ editing, and the 3D hero fallback.
+6. Verify both persistence paths: the CMS view/local storage behavior and the
+   API/MongoDB behavior. Confirm the GTM debugger shows the expected
+   `form_submit` payload without exposing secrets.
+7. Deploy the built application and server through the normal release process,
+   with production environment variables configured in the hosting platform.
+8. Monitor server logs and MongoDB/API health after release. If a deployment
+   fails, roll back the application build rather than deleting submissions or
+   changing production data destructively.
+
+## 9. Use of AI Tools Disclosure Strategy
 
 The assignment states: *"AI-assisted development tools are allowed and encouraged. You may use tools such as Claude Code, Cursor, GitHub Copilot or ChatGPT. Be prepared to explain which AI tools you used, what you used them for, and what you reviewed or changed yourself."*
 
