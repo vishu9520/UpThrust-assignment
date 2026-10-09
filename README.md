@@ -7,7 +7,7 @@
 ## 🚀 Live Demo & Presentation
 - **Local Dev Server:** `http://localhost:3000/`
 - **Live Deployment:** [upthrust-assignment-ipcd.onrender.com](https://upthrust-assignment-ipcd.onrender.com/#hero)
-- **Build Output:** Production static bundle in `/dist` (Vercel / Netlify / Cloudflare Pages ready)
+- **Production Deployment:** [Live on Render](https://upthrust-assignment-ipcd.onrender.com/#hero)
 
 ---
 
