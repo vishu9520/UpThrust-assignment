@@ -84,8 +84,8 @@ The browser only communicates with the server API, so MongoDB credentials are ne
 into the frontend.
 
 1. Keep the Atlas credentials in `.env` (or set `MONGODB_ENV_FILE` to a protected environment
-   file). This file is ignored by Git.
-2. Set `MONGODB_DB_NAME` if you want a database name other than `upthrust`.
+   file). This file is ignored by Git. Never commit `.env` or `atlas-credentials.env`.
+2. Set `MONGODB_DB_NAME` to `UpThrust` to use the existing Atlas database.
 3. Run `npm run dev` to start both the Vite frontend and the MongoDB-backed API.
 4. For production, run `npm run build` and then `npm start` on a server that has the same
    environment variables. Deploying only the `dist` folder does not include the API.
@@ -144,39 +144,73 @@ window.dataLayer.push({
 
 ## 🚢 Deployment Steps
 
-### Option A: Deploy to Vercel (Recommended)
-1. Push this repository to GitHub:
+### Option A: Deploy to Render
+
+This project must be deployed as a **Web Service**, not as a static site. The Express
+server serves the built frontend and the MongoDB API from the same deployment.
+
+1. Push the repository to GitHub:
    ```bash
-   git remote add origin https://github.com/YOUR_USERNAME/upthrust-landing.git
-   git branch -M main
-   git push -u origin main
+   git add .
+   git commit -m "Deploy MongoDB-backed CMS"
+   git push origin main
    ```
-2. Log into [Vercel](https://vercel.com/) and click **"Add New Project"**.
-3. Import your GitHub repository.
-4. Framework Preset: **Vite**.
-5. Build Command: `npm run build` | Output Directory: `dist`.
-6. Click **Deploy**. Your staging URL will be live in ~30 seconds.
+2. In [Render](https://render.com/), create **New → Web Service** and select the repository.
+3. Use these settings:
 
-### Option B: Deploy to Netlify
-1. Connect repository on [Netlify](https://app.netlify.com/).
-2. Build command: `npm run build`.
-3. Publish directory: `dist`.
-4. Deploy!
+   | Render setting | Value |
+   | --- | --- |
+   | Root Directory | `.` (or leave blank) |
+   | Runtime | Node |
+   | Build Command | `npm install && npm run build` |
+   | Start Command | `npm start` |
 
-### Option C: Run Locally
+4. Add these environment variables in Render. Do not paste them into source files:
+   ```text
+   MONGODB_URI=mongodb+srv://<username>:<new-password>@cluster0.dalbiv3.mongodb.net
+   MONGODB_DB_NAME=UpThrust
+   ```
+   Render supplies `PORT` automatically. If you set it manually, use Render's assigned
+   port rather than the local `3001` value.
+5. In MongoDB Atlas **Network Access**, allow the deployment to connect. For a basic
+   deployment, `0.0.0.0/0` can be used; restrict access further when fixed outbound IPs
+   are available.
+6. Deploy and open the Render URL.
+
+The server connects to MongoDB on startup and seeds `defaultContent` only when the CMS
+document does not already exist. Existing CMS edits are preserved.
+
+### Option B: Run Locally
 ```bash
-# 1. Install dependencies
+# Install dependencies
 npm install
 
-# 2. Start development server
+# Start Vite and the MongoDB API together
 npm run dev
 
-# 3. Build & preview production bundle
+# Build the frontend and type-check the server
 npm run build
-npm run preview
+
+# Start the production server
+npm start
 ```
 
----
+### Deployment verification
+
+After deployment, verify:
+
+```text
+https://<your-render-url>/
+https://<your-render-url>/random-page
+https://<your-render-url>/api/cms/content
+https://<your-render-url>/api/submissions
+```
+
+Unknown browser routes display the custom 404 page. Unknown `/api/*` routes return
+HTTP `404` JSON responses. Submit a test inquiry and confirm it appears in the
+MongoDB Atlas `UpThrust.submissions` collection and in **CMS Admin → Leads & Inquiries**.
+
+Rotate any MongoDB password that has been exposed and use a new password in Render.
 
 ## 🤖 AI Tools Used During Development
 - **Google Antigravity IDE (Gemini 3.8 Flash):** Used for scaffolding, Three.js shader material calibration, responsive CSS token design, and writing automated Puppeteer/Axe-core test scripts.
