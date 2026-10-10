@@ -6,7 +6,7 @@ export const GTMDebugger: React.FC = () => {
 
   return (
     <aside aria-label="GTM Event Inspector Tool" className="fixed bottom-4 left-4 z-40 select-none">
-      {/* Floating Toggle Button */}
+     
       <button
         onClick={() => setIsDebuggerOpen(!isDebuggerOpen)}
         className="flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-neutral-900/95 hover:bg-neutral-800 text-neutral-200 border border-neutral-700/80 shadow-2xl backdrop-blur-md text-xs font-mono transition-all group focus:outline-none focus:ring-2 focus:ring-orange-500"
@@ -19,10 +19,10 @@ export const GTMDebugger: React.FC = () => {
         </span>
       </button>
 
-      {/* Expanded Monitor Panel */}
+     
       {isDebuggerOpen && (
         <div className="absolute bottom-12 left-0 w-[92vw] sm:w-[480px] bg-neutral-950/95 border border-neutral-800 rounded-2xl shadow-2xl backdrop-blur-xl flex flex-col max-h-[460px] overflow-hidden text-neutral-200 text-xs font-mono animate-in slide-in-from-bottom-3 duration-200">
-          {/* Header */}
+        
           <div className="p-3.5 border-b border-neutral-800 flex items-center justify-between bg-black/60">
             <div className="flex items-center gap-2">
               <span className="text-orange-500 font-bold">●</span>
@@ -46,7 +46,7 @@ export const GTMDebugger: React.FC = () => {
             </div>
           </div>
 
-          {/* Event Stream */}
+          
           <div className="p-3 overflow-y-auto flex-1 space-y-2.5 max-h-[380px]">
             {events.length === 0 ? (
               <div className="text-center py-8 text-neutral-500">
@@ -87,7 +87,7 @@ export const GTMDebugger: React.FC = () => {
             )}
           </div>
 
-          {/* Quick Info Footer */}
+          
           <div className="p-2.5 border-t border-neutral-800/80 bg-neutral-900/40 text-[10px] text-neutral-400 flex items-center justify-between">
             <span>Verified in: <code>window.dataLayer</code></span>
             {lastEvent && lastEvent.event === 'form_submit' && (

@@ -228,6 +228,7 @@ Rotate any MongoDB password that has been exposed and use a new password in Rend
 ---
 
 ## 🔮 What We Would Improve With More Time
-1. **Interactive Three.js Post-Processing:** Integrate an optional Bloom / chromatic aberration post-processing pass on desktop GPUs.
-2. **Headless CMS Webhooks:** Wire the in-browser CMS export directly to a serverless edge API or GitHub Actions webhook for automated CI/CD redeployments.
-3. **Multi-Step Estimation Calculator:** Add an interactive budget and scope estimator widget within the contact modal.
+1. **Role-Based Access Control (RBAC):** Add authenticated roles and granular permissions for CMS administration, content editing, and lead management so only authorized users can update content or access submissions.
+2. **Interactive Three.js Post-Processing:** Integrate an optional Bloom / chromatic aberration post-processing pass on desktop GPUs.
+3. **Headless CMS Webhooks:** Wire the in-browser CMS export directly to a serverless edge API or GitHub Actions webhook for automated CI/CD redeployments.
+4. **Multi-Step Estimation Calculator:** Add an interactive budget and scope estimator widget within the contact modal.
