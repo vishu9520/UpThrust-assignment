@@ -38,7 +38,6 @@ export const CMSAdminModal: React.FC = () => {
     >
       <div className="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden text-neutral-200">
         
-        {/* Header */}
         <div className="shrink-0 p-5 md:p-6 border-b border-neutral-800 flex items-center justify-between gap-4 bg-neutral-950">
           <div className="min-w-0 flex items-center gap-3">
             <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
@@ -69,7 +68,6 @@ export const CMSAdminModal: React.FC = () => {
           </div>
         </div>
 
-        {/* Tab Navigation */}
         <div className="shrink-0 flex min-h-14 items-stretch border-b border-neutral-800 bg-neutral-950/60 px-3 sm:px-6 gap-1 sm:gap-2 text-xs font-bold uppercase tracking-wider overflow-x-auto">
           <button
             onClick={() => setActiveTab('faqs')}
@@ -113,10 +111,8 @@ export const CMSAdminModal: React.FC = () => {
           </button>
         </div>
 
-        {/* Modal Body */}
         <div className="p-6 overflow-y-auto flex-1 space-y-6">
           
-          {/* TAB: FAQs (Primary Interview Live Change Requirement) */}
           {activeTab === 'faqs' && (
             <div className="space-y-6">
               <div className="bg-neutral-950 p-4 rounded-xl border border-neutral-800/80">
@@ -199,7 +195,6 @@ export const CMSAdminModal: React.FC = () => {
             </div>
           )}
 
-          {/* TAB: Hero & Headlines */}
           {activeTab === 'hero' && (
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -295,7 +290,6 @@ export const CMSAdminModal: React.FC = () => {
             </div>
           )}
 
-          {/* TAB: Testimonials */}
           {activeTab === 'testimonials' && (
             <div className="space-y-4">
               {content.testimonials.map((t) => (
@@ -343,7 +337,6 @@ export const CMSAdminModal: React.FC = () => {
             </div>
           )}
 
-          {/* TAB: Submissions (Demonstrable lead storage) */}
           {activeTab === 'submissions' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -395,7 +388,6 @@ export const CMSAdminModal: React.FC = () => {
 
         </div>
 
-        {/* Footer */}
         <div className="p-4 border-t border-neutral-800 bg-neutral-950 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
